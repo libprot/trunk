@@ -1,7 +1,6 @@
 Libprot v.0.0.1 Copyright © Alexander Ilin, 2015 year
 
-My goal is to take my life simple. It is a set of source codes that will help to 
-develop a software protection. 
+It is a set of source codes that will help to develop a software protection. 
 
 There is no end solution; this library provides only basic functionality and may 
 be modified every time for the current project.   
