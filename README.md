@@ -1,13 +1,19 @@
-Libprot v.0.0.1 Copyright © Alexander Ilin, 2015 year
+Libprot v.0.0.1 
+--------------------------------------------------------------------------
 
-It is a set of source codes that will help to develop a software protection. 
+Libprot is designed to provide you with a basic functionality of software
+protection.
 
-There is no end solution; this library provides only basic functionality and may 
-be modified every time for the current project.   
+Full sources codes are included and may be modified to fit the current 
+needs.
 
-Your feedback is very important for me. Feel free to contact with me. 
+It's easiest solution to protect your software, but it will help to limit
+the piracy and increase profit of a company.
 
-In the current version you may see:
+Project in development stage and your feedback is very important for me. 
+Feel free to contact. 
+
+In the current version:
 
 1)	XOR crypt (very basic algorithm to obfuscate data and make it less obvious)
 2)	Bin2Hex – to represent binary data as hex (numbers from 0 to 9 and letters 
@@ -16,5 +22,7 @@ In the current version you may see:
 4)	Example to generate a key and check it validity
 5)	Asymmetric algorithm with public and private key
 
+--------------------------------------------------------------------------
+Copyright (c) Alexander Ilin, 2005
 E-mail: alexander.ilin83 ( at ) gmail.com
 https://github.com/libprot/trunk
