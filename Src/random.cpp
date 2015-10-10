@@ -20,20 +20,25 @@
 
 */
 
-#include <stdlib.h>
+#include "stdafx.h"
 #include <time.h>
 #include "..\inc\random.h"
 
-CRandomGenerator::CRandomGenerator() {
-	srand((int)time(NULL));
+CRandomGenerator::CRandomGenerator()
+: m_iSeed((unsigned int)time(NULL))
+{
 }
 
 int CRandomGenerator::getRandom(int maximum) {
-	return rand() % maximum;
+	m_iSeed = m_iSeed * 1103515245 + 12345;
+	if (maximum == 0) {
+		return m_iSeed;
+	}
+	return m_iSeed % maximum;
 }
 
 long long CRandomGenerator::getRandom(long long maximum) {
-	long long random_value = ((long long)rand() << 32) + rand();
+	unsigned long long random_value = getRandom((int)0) + ((long long)getRandom((int)0) << 32);
 	return random_value % maximum;
 }
 
