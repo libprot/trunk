@@ -19,11 +19,48 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 */
-
-#include <windows.h>
+#include "stdafx.h"
+#include "PECheckSumCalc.h"
+#include "PECheckSumCalcDlg.h"
 #include <ImageHlp.h>
+#include <vector>
 
-void openFileNameDialog()
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+// CPECheckSumCalcDlg dialog
+
+CPECheckSumCalcDlg::CPECheckSumCalcDlg(CWnd* pParent /*=NULL*/)
+	: CDialog(CPECheckSumCalcDlg::IDD, pParent)
+{
+}
+
+void CPECheckSumCalcDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CDialog::DoDataExchange(pDX);
+}
+
+BEGIN_MESSAGE_MAP(CPECheckSumCalcDlg, CDialog)
+    ON_BN_CLICKED(IDC_FINDBUTTON, &CPECheckSumCalcDlg::OnBnOpenDialogClicked)
+    ON_BN_CLICKED(IDC_PROCESSBUTTON, &CPECheckSumCalcDlg::OnBnProcessClicked)
+END_MESSAGE_MAP()
+
+void writeProcess(LPVOID lpBaseAddress, LPCVOID lpBuffer, int nSize)
+{
+	DWORD dwProtectValue = PAGE_NOACCESS;
+	HANDLE hProcess = GetCurrentProcess();
+	BOOL bResult = WriteProcessMemory(hProcess, lpBaseAddress, lpBuffer, nSize, NULL);
+	if (bResult == FALSE) 
+	{
+		bResult = VirtualProtect(lpBaseAddress, nSize, PAGE_WRITECOPY, &dwProtectValue); 
+		if (bResult != FALSE) {
+			WriteProcessMemory(hProcess, lpBaseAddress, lpBuffer, nSize, NULL);
+		}
+	}
+	VirtualProtect(lpBaseAddress, nSize, dwProtectValue, &dwProtectValue);
+}
+void CPECheckSumCalcDlg::OnBnOpenDialogClicked()
 {
     // simple open dialog to get file name
     OPENFILENAME openFileName;
@@ -43,13 +80,16 @@ void openFileNameDialog()
 
     GetOpenFileName(&openFileName);
     if ((int)CommDlgExtendedError() == 0) {
-        recalculateChecksum(strFileName);
+        GetDlgItem(IDC_FILEPATHEDIT)->SetWindowText(strFileName);
     }
 }
-void recalculateChecksum(TCHAR* szFileName)
+
+
+void CPECheckSumCalcDlg::OnBnProcessClicked()
 {
     // Needs to open a file for reading & writing
-    HANDLE hFile = CreateFile(szFileName, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    GetDlgItem(IDC_FILEPATHEDIT)->GetWindowText(m_strFileName);
+    HANDLE hFile = CreateFile(m_strFileName, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     if (hFile == INVALID_HANDLE_VALUE) {
         return;
     }
@@ -81,10 +121,5 @@ void recalculateChecksum(TCHAR* szFileName)
     UnmapViewOfFile(pBaseAddr);
     CloseHandle(hFileMapping);
     CloseHandle(hFile);
-}
-
-void main()
-{
-	// TODO: show some help
-	openFileNameDialog();
+	EndDialog(0);
 }
