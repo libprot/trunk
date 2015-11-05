@@ -29,7 +29,6 @@ class CRandomGenerator {
 		
 		int getRandom(int maximum);
 		long long getRandom(long long maximum);
-		double getRandomNormal(double mean, double stddev);
 	
 	private:
 		unsigned int m_iSeed;

@@ -41,8 +41,3 @@ long long CRandomGenerator::getRandom(long long maximum) {
 	unsigned long long random_value = getRandom((int)0) + ((long long)getRandom((int)0) << 32);
 	return random_value % maximum;
 }
-
-double CRandomGenerator::getRandomNormal(double mean, double stddev) {
-	// not implemented
-	return 0;
-}
